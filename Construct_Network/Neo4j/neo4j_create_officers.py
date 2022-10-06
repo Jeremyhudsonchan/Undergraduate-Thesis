@@ -10,11 +10,12 @@ unique_officers = pd.read_csv(
     "file:///Users/jeremyhudsonchan/Library/Application Support/Neo4j Desktop/Application/relate-data/projects/project-e29b7268-ed54-46aa-8b23-04625787f4df/unique_officers.csv")
 
 # connect to the database
-graph = Graph(url, auth=("neo4j", pwd), name ="officers-and-beats")
+graph = Graph(url, auth=("neo4j", pwd), name="officers-and-beats-update")
 
 # add officers to the database
-# OfficerID,OfficerFirst,OfficerLast,Gender,Race,ApptDate,Unit,Rank,Star,Age,Beat
+# OfficerID,OfficerFirst,OfficerLast,Gender,Race,ApptDate,Unit,Rank,Star,Age,Beat,NumAllegations
 for index, row in unique_officers.iterrows():
+    print(index, row)
     OfficerID = row["OfficerID"]
     OfficerFirst = row["OfficerFirst"]
     OfficerLast = row["OfficerLast"]
@@ -26,9 +27,10 @@ for index, row in unique_officers.iterrows():
     Star = row["Star"]
     Age = row["Age"]
     Beat = int(row["Beat"])
+    NumAllegations = int(row["num_allegations"])
     # create node using each row
     graph.run(
-        "CREATE (:OFFICER {OfficerID: $OfficerID, OfficerFirst: $OfficerFirst, OfficerLast: $OfficerLast, Gender: $Gender, Race: $Race, ApptDate: $ApptDate, Unit: $Unit, Rank: $Rank, Star: $Star, Age: $Age, Beat: $Beat})", OfficerID=OfficerID, OfficerFirst=OfficerFirst, OfficerLast=OfficerLast, Gender=Gender, Race=Race, ApptDate=ApptDate, Unit=Unit, Rank=Rank, Star=Star, Age=Age, Beat=Beat)
+        "CREATE (:OFFICER {OfficerID: $OfficerID, OfficerFirst: $OfficerFirst, OfficerLast: $OfficerLast, Gender: $Gender, Race: $Race, ApptDate: $ApptDate, Unit: $Unit, Rank: $Rank, Star: $Star, Age: $Age, Beat: $Beat, NumAllegations: $NumAllegations})", OfficerID=OfficerID, OfficerFirst=OfficerFirst, OfficerLast=OfficerLast, Gender=Gender, Race=Race, ApptDate=ApptDate, Unit=Unit, Rank=Rank, Star=Star, Age=Age, Beat=Beat, NumAllegations=NumAllegations)
 
 print("Created_All_Officers")
 # get unique beats from dataframe then convert it to integers
